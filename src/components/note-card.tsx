@@ -14,7 +14,10 @@ export function NoteCard({ note }: NoteCardProps) {
     <Dialog.Root>
       <Dialog.Trigger className="text-left flex flex-col rounded-md bg-slate-800 p-5 gap-3 overflow-hidden relative hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400 focus:ring-2 focus:ring-lime-400 outline-none">
         <span className="text-sm font-medium text-slate-300">
-          {note.date.toISOString()}
+          {formatDistanceToNow(note.date, {
+                locale: ptBR,
+                addSuffix: true,
+              })}
         </span>
         <p className="text-sm leading-6 text-slate-400">{note.content}</p>
 
@@ -30,16 +33,24 @@ export function NoteCard({ note }: NoteCardProps) {
           </Dialog.Close>
           <div className="flex flex-1 flex-col gap-3 p-5">
             <span className="text-sm font-medium text-slate-300">
-              { formatDistanceToNow(note.date, {locale: ptBR, addSuffix: true}) }
+              {formatDistanceToNow(note.date, {
+                locale: ptBR,
+                addSuffix: true,
+              })}
             </span>
             <p className="text-sm leading-6 text-slate-400">{note.content}</p>
           </div>
 
-          <button 
-          type="button"
-          className="w-full bg-slate-800 py-4 text-center text-slate-300 outline-none font-medium group"
-          > {/* using tailwindcss group to add a style to a children tag like a underline for span from the father button */}
-            Deseja <span className="text-rose-500 group-hover:underline">apagar essa nota</span>
+          <button
+            type="button"
+            className="w-full bg-slate-800 py-4 text-center text-slate-300 outline-none font-medium group"
+          >
+            {" "}
+            {/* using tailwindcss group to add a style to a children tag like a underline for span from the father button */}
+            Deseja{" "}
+            <span className="text-rose-500 group-hover:underline">
+              apagar essa nota
+            </span>
           </button>
         </Dialog.Content>
       </Dialog.Portal>
