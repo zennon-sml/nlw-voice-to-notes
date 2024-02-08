@@ -3,8 +3,13 @@ import { X } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "sonner";
 
-export function NewNoteCard() {
+interface NewNoteCardProps {
+  onNoteCreated: (content: string) => void;
+}
+
+export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
   const [shouldShowOnboarding, setShouldShowOnboarding] = useState(true);
+  const [isRecording, setIsRecording] = useState(false);
   const [content, setContent] = useState("");
 
   function handleStartEditor() {
@@ -19,7 +24,16 @@ export function NewNoteCard() {
   function handleSaveNote(event: FormEvent) {
     event.preventDefault();
 
-    toast.success("Nota criada com sucesso!")
+    onNoteCreated(content);
+
+    setContent("");
+    setShouldShowOnboarding(true);
+
+    toast.success("Nota criada com sucesso!");
+  }
+
+  function handleStartRecording() {
+    setIsRecording(true);
   }
 
   return (
@@ -48,7 +62,10 @@ export function NewNoteCard() {
               {shouldShowOnboarding ? (
                 <p className="text-sm leading-6 text-slate-400">
                   Comece{" "}
-                  <button className="font-medium text-lime-400 hover:underline">
+                  <button
+                    onClick={handleStartRecording}
+                    className="font-medium text-lime-400 hover:underline"
+                  >
                     gravando uma nota em áudio
                   </button>{" "}
                   ou se preferir{" "}
@@ -65,14 +82,22 @@ export function NewNoteCard() {
                   autoFocus
                   className="text-sm lading-6 text-slate-400 bg-transparent resize-none  flex-1 outline-none"
                   onChange={handleContentChange}
+                  value={content}
                 />
               )}
             </div>
-
-            <button
-              type="submit"
-              className="w-full bg-lime-400 py-4 text-center text-lime-950 outline-none font-medium hover:bg-lime-500"
-            >
+            {isRecording ? (
+              <button
+                type="submit"
+                className="w-full bg-lime-400 py-4 text-center text-lime-950 outline-none font-medium hover:bg-lime-500"
+              >
+            ) : (
+              <button
+                type="submit"
+                className="w-full bg-red-300 py-4 text-center text-lime-950 outline-none font-medium hover:bg-lime-500"
+              ></button>
+            )
+            }
               Salvar nota
             </button>
           </form>
