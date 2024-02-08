@@ -40,7 +40,9 @@ export function App() {
 
     setSearch(query);
   }
-  console.log(search)
+
+
+  console.log(search);
   return (
     <div className="mx-auto max-w-6xl ny-12 space-y-6">
       <img src={logo} alt="NLW" />
