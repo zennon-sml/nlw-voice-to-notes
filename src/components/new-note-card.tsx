@@ -1,12 +1,13 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
-import { Result } from "postcss";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "sonner";
 
 interface NewNoteCardProps {
   onNoteCreated: (content: string) => void;
 }
+
+let speechRecognition: SpeechRecognition | null = null
 
 export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
   const [shouldShowOnboarding, setShouldShowOnboarding] = useState(true);
@@ -51,7 +52,7 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
 
     const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition
 
-    const speechRecognition = new SpeechRecognitionAPI
+    speechRecognition = new SpeechRecognitionAPI
 
     speechRecognition.lang = "pt-BR"
     speechRecognition.continuous = true
@@ -72,8 +73,13 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
 
     speechRecognition.start()
   }
+  
   function handleStopRecording() {
     setIsRecording(false);
+
+    if (speechRecognition !== null){
+      speechRecognition.stop()
+    }
   }
 
   return (
